@@ -1,0 +1,14 @@
+<script>
+    // c = console, u = file URL
+    const params = new URLSearchParams(window.location.search);
+
+    const consoleType = params.get("c");
+
+    if (consoleType === "dos") {
+        window.location.href = "dos.html?" + params.toString();
+    } else {
+        window.location.href = "ejs.html" + window.location.search;
+    }
+</script>
+
+<h1>Redirecting...</h1>
