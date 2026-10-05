@@ -87,19 +87,11 @@
         throw new Error("Unsupported system: " + system);
     }
 
-    // EmulatorJS configuration
     window.EJS_player = "#game";
-    window.EJS_core = core;
+    window.EJS_core = cores[system];
     window.EJS_gameUrl = rom;
-
-    // Where EmulatorJS loads its files from
-    window.EJS_pathtodata =
-        "https://cdn.emulatorjs.org/stable/data/";
-
-    // Hide loading once EmulatorJS starts
-    window.EJS_onGameStart = function () {
-        document.getElementById("loading").classList.add("hidden");
-    };
+    window.EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+    window.EJS_ready = () => document.getElementById("loading").classList.add("hidden");
 
     // Load EmulatorJS
     const script = document.createElement("script");
