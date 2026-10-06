@@ -1,0 +1,150 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DOS Game</title>
+
+    <link
+        rel="stylesheet"
+        href="https://v8.js-dos.com/latest/js-dos.css"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #player {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #dos {
+            width: 100%;
+            height: 100%;
+        }
+
+        #loading {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #0b0b0f;
+            color: white;
+
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+
+            transition: opacity 0.3s;
+        }
+
+        #loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #fullscreen {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            z-index: 20;
+
+            border: 0;
+            border-radius: 8px;
+
+            padding: 10px 14px;
+
+            background: rgba(25, 25, 30, 0.9);
+            color: white;
+
+            cursor: pointer;
+            font-size: 14px;
+
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        #player:hover #fullscreen {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="player">
+
+    <div id="dos"></div>
+
+    <div id="loading">
+        Loading DOS game...
+    </div>
+
+    <button id="fullscreen">
+        ⛶ Fullscreen
+    </button>
+
+</div>
+
+<script src="https://v8.js-dos.com/latest/js-dos.js"></script>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+
+    const system = params.get("c");
+    const game = params.get("u");
+
+    if (system !== "dos" || !game) {
+        document.getElementById("loading").textContent =
+            "Invalid DOS game.";
+        throw new Error("Missing DOS game URL");
+    }
+
+    const player = document.getElementById("player");
+    const loading = document.getElementById("loading");
+
+    // Start js-dos
+    const dos = Dos(document.getElementById("dos"), {
+        url: game,
+        autoStart: true
+    });
+
+    // Hide loading screen
+    // Give js-dos a moment to initialize
+    setTimeout(() => {
+        loading.classList.add("hidden");
+    }, 1500);
+
+    // Fullscreen
+    document.getElementById("fullscreen").addEventListener("click", async () => {
+        try {
+            if (!document.fullscreenElement) {
+                await player.requestFullscreen();
+            } else {
+                await document.exitFullscreen();
+            }
+        } catch (err) {
+            console.error("Fullscreen error:", err);
+        }
+    });
+</script>
+
+</body>
+</html>
+```
