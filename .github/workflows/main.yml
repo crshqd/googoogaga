@@ -37,7 +37,7 @@ jobs:
       - name: Generate files.json
         run: |
           aws s3api list-objects-v2 \
-            --bucket superbucket123 \
+            --bucket ccportedroms \
             --region us-west-2 \
             --output json |
           jq '[
